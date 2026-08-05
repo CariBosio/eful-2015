@@ -12,5 +12,6 @@ export const efulPlantel = [
   { id: 11, nombre: "Ferreyra Uriel", dorsal: "61", categoria: "2016", posicion: "Delantero", foto: "" },
   { id: 12, nombre: "Garcia Flores Lautaro", dorsal: "53", categoria: "2016", posicion: "Delantero", foto: "" },
   { id: 13, nombre: "Garzon Clemente (sólo sábado)", dorsal: "62", categoria: "2016", posicion: "Arquero", foto: "" },
-  { id: 14, nombre: "González Francisco", dorsal: "56", categoria: "2016", posicion: "Mediocampista", foto: "" }
-];
+  { id: 14, nombre: "González Francisco", dorsal: "56", categoria: "2016", posicion: "Mediocampista", foto: "" },
+  { id: 15, nombre: "Joaquín Oliva", dorsal: "DT", categoria: "2016", posicion: "Profesor", foto: "" }
+]

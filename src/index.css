@@ -3,8 +3,8 @@
   --bg-secondary: #1e1e1e;      /* Fondo de tarjetas y contenedores */
   --card-bg: #252525;           /* Superficies de tarjetas */
   
-  --color-primary: #ffcc00;     /* Amarillo EFUL vibrante */
-  --primary: #ffcc00;           /* Alias para compatibilidad */
+  --color-primary: #fee702;     /* Amarillo EFUL vibrante */
+  --primary: #fee702;           /* Alias para compatibilidad */
   --color-primary-hover: #e6b800; 
   --color-accent: #ff8800;      /* Naranja secundario para detalles */
   --accent: #ff8800;            /* Alias para compatibilidad */
@@ -180,3 +180,33 @@ body {
 .status-win-text { color: #22c55e; }
 .status-loss-text { color: #ef4444; }
 .status-draw-text { color: #3b82f6; }
+
+/* =================================== */
+
+/* Bloquea el scroll de toda la página mientras está el splash activo */
+body.splash-active {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212; /* Fondo oscuro elegante */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Tamaño más pequeño y centrado */
+.eful-logo-anim {
+  width: 700px; 
+  height: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

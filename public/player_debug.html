@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { background: #eee; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    svg { border: 1px solid #ccc; background: white; max-width: 90%; max-height: 90%; }
+    #player { fill: #0077ff; opacity: 0.8; }
+    #player-shin { fill: #ff3300; opacity: 0.8; }
+    .pivot { fill: #ffcc00; stroke: #000; stroke-width: 3; }
+  </style>
+</head>
+<body>
+  <div id="svg-container"></div>
+  <script>
+    // Fetch LogoSplash.jsx content to extract current paths
+    fetch('/src/components/LogoSplash.jsx')
+      .then(res => res.text())
+      .then(text => {
+        const groupMatch = text.match(/<g id="player-group">([\s\S]*?)<\/g>/);
+        if (!groupMatch) {
+          document.body.innerHTML = "<h1>Could not find player-group in LogoSplash.jsx</h1>";
+          return;
+        }
+        
+        let pathsXml = groupMatch[1];
+        // Clean React attributes to standard HTML SVG attributes
+        pathsXml = pathsXml.replace(/fillRule=/g, 'fill-rule=');
+        pathsXml = pathsXml.replace(/clipRule=/g, 'clip-rule=');
+        
+        const svgHtml = `
+          <svg viewBox="900 300 1100 1300" width="800" height="800">
+            <g>
+              ${pathsXml}
+              <circle cx="1293.04" cy="1170.68" r="10" class="pivot" />
+              <text x="1310" y="1175" font-family="sans-serif" font-size="20" fill="black">Pivot (1293, 1171)</text>
+            </g>
+          </svg>
+        `;
+        document.getElementById('svg-container').innerHTML = svgHtml;
+      });
+  </script>
+</body>
+</html>
