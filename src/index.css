@@ -1,0 +1,182 @@
+:root {
+  --bg-primary: #121212;        /* Fondo general negro oscuro */
+  --bg-secondary: #1e1e1e;      /* Fondo de tarjetas y contenedores */
+  --card-bg: #252525;           /* Superficies de tarjetas */
+  
+  --color-primary: #ffcc00;     /* Amarillo EFUL vibrante */
+  --primary: #ffcc00;           /* Alias para compatibilidad */
+  --color-primary-hover: #e6b800; 
+  --color-accent: #ff8800;      /* Naranja secundario para detalles */
+  --accent: #ff8800;            /* Alias para compatibilidad */
+  
+  --text-main: #ffffff;         /* Texto principal blanco */
+  --text-muted: #aaaaaa;        /* Texto secundario gris */
+  
+  --border-color: #333333;      /* Bordes sutiles */
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: var(--bg-secondary);
+  border-bottom: 2px solid var(--color-primary);
+  color: white;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+}
+
+.header p {
+  margin: 0.5rem 0 0 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 0.5rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--text-main);
+}
+
+.nav-btn.active {
+  background-color: var(--color-primary);
+  color: var(--bg-primary);
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
+}
+
+.main-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Tarjetas y Secciones */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-align: center;
+  color: var(--color-primary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--border-color);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-primary);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+}
+
+.match-card {
+  background: var(--card-bg);
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  border: 1px solid var(--border-color);
+  border-left: 5px solid var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@media(min-width: 640px) {
+  .match-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.match-input {
+  width: 90px;
+  padding: 0.4rem;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.match-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+
+/* ================================*/
+
+/* Indicadores de resultados en el fixture */
+.match-card.status-win {
+  border-left: 5px solid #22c55e; /* Verde victoria */
+}
+.match-card.status-loss {
+  border-left: 5px solid #ef4444; /* Rojo derrota */
+}
+.match-card.status-draw {
+  border-left: 5px solid #3b82f6; /* Azul empate */
+}
+
+.status-win-text { color: #22c55e; }
+.status-loss-text { color: #ef4444; }
+.status-draw-text { color: #3b82f6; }
