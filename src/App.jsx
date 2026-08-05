@@ -4,6 +4,7 @@ import Plantel from "./components/Plantel";
 import "./index.css";
 import { gsap } from "gsap";
 import LogoSplash from "./components/LogoSplash";
+import Galeria from "./components/Galeria";
 
 export default function App() {
   const [tab, setTab] = useState("fixture");
@@ -182,7 +183,7 @@ export default function App() {
       // === ANIMACIÓN DE LA PATADA Y ZOOM DE LA PELOTA HACIA LA PANTALLA ===
 
       // H. El jugador se echa hacia atrás preparándose para el tiro (pivote en la cadera "60% 45%")
-     
+
       .to(
         "#player-group",
         {
@@ -194,9 +195,9 @@ export default function App() {
         },
         "+=0.3",
       )
-   
+
       // I. El jugador golpea el balón moviéndose hacia adelante con inercia
-          .to("#player-group", {
+      .to("#player-group", {
         rotation: -18,
         x: -35,
         y: 15,
@@ -316,10 +317,18 @@ export default function App() {
           >
             ⭐ Plantel Oficial
           </button>
+          <button
+            onClick={() => setTab("galeria")}
+            className={`nav-btn ${tab === "galeria" ? "active" : ""}`}
+          >
+            📸 Galería de Fotos
+          </button>
         </nav>
 
-        <main className="main-content">
-          {tab === "fixture" ? <Fixture /> : <Plantel />}
+      <main className="main-content">
+          {tab === "fixture" && <Fixture />}
+          {tab === "plantel" && <Plantel />}
+          {tab === "galeria" && <Galeria />}
         </main>
       </div>
     </div>
