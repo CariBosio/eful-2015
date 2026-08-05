@@ -182,14 +182,14 @@ export default function App() {
       // === ANIMACIÓN DE LA PATADA Y ZOOM DE LA PELOTA HACIA LA PANTALLA ===
 
       // H. El jugador se echa hacia atrás preparándose para el tiro (pivote en la cadera "60% 45%")
-      // La pierna doblada (#player-shin) se dobla un poco más hacia atrás
+     
       .to(
         "#player-group",
         {
           rotation: 12,
           x: 20,
           y: -10,
-          duration: 0.4,
+          duration: 0.8,
           ease: "power2.inOut",
         },
         "+=0.3",
@@ -200,8 +200,8 @@ export default function App() {
         rotation: -18,
         x: -35,
         y: 15,
-        duration: 0.15,
-        ease: "power1.in",
+        duration: 0.5,
+        ease: "power1.out",
       })
 
       // J. La pelota vuela hacia la pantalla (zoom gigante y fadeout)
@@ -214,7 +214,7 @@ export default function App() {
           ease: "power2.in",
           transformOrigin: "center center",
         },
-        "-=0.05",
+        "-=0.2",
       )
 
       // K. El resto de las partes del logo se desvanecen suavemente
