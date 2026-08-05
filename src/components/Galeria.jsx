@@ -50,7 +50,7 @@ export default function Galeria() {
 
         const nuevaFoto = {
           url: urlPublica,
-          autor: autorInput.trim() || 'Familiar anónimo',
+          autor: autorInput.trim() || 'Anónimo',
           fecha: new Date().toLocaleDateString()
         };
 
