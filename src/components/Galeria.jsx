@@ -6,6 +6,7 @@ export default function Galeria() {
   const [fotos, setFotos] = useState([]);
   const [autorInput, setAutorInput] = useState('');
   const [subiendo, setSubiendo] = useState(false);
+  const [fotoSeleccionada, setFotoSeleccionada] = useState(null); // Estado para la foto en grande
 
   // Cargar fotos desde Supabase al iniciar el componente
   useEffect(() => {
@@ -25,49 +26,49 @@ export default function Galeria() {
     }
   };
 
-  // Función para manejar la subida de fotos a Supabase Storage y Base de Datos
-  const handleSubirFoto = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  // Función para manejar la subida múltiple de fotos
+  const handleSubirFotos = async (e) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     setSubiendo(true);
     try {
-      // 1. Subir la imagen al Bucket de Storage
-      const fileName = `${Date.now()}_${file.name}`;
-      const { error: uploadError } = await supabase.storage
-        .from('galeria-efuls')
-        .upload(fileName, file);
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const fileName = `${Date.now()}_${i}_${file.name}`;
+        const { error: uploadError } = await supabase.storage
+          .from('galeria-efuls')
+          .upload(fileName, file);
 
-      if (uploadError) throw uploadError;
+        if (uploadError) throw uploadError;
 
-      // 2. Obtener la URL pública de la imagen
-      const { data: publicURLData } = supabase.storage
-        .from('galeria-efuls')
-        .getPublicUrl(fileName);
+        const { data: publicURLData } = supabase.storage
+          .from('galeria-efuls')
+          .getPublicUrl(fileName);
 
-      const urlPublica = publicURLData.publicUrl;
+        const urlPublica = publicURLData.publicUrl;
 
-      // 3. Guardar el registro en la tabla 'fotos_mundialito'
-      const nuevaFoto = {
-        url: urlPublica,
-        autor: autorInput.trim() || 'Familiar anónimo',
-        fecha: new Date().toLocaleDateString()
-      };
+        const nuevaFoto = {
+          url: urlPublica,
+          autor: autorInput.trim() || 'Familiar anónimo',
+          fecha: new Date().toLocaleDateString()
+        };
 
-      const { error: dbError } = await supabase
-        .from('fotos_mundialito')
-        .insert([nuevaFoto]);
+        const { error: dbError } = await supabase
+          .from('fotos_mundialito')
+          .insert([nuevaFoto]);
 
-      if (dbError) throw dbError;
+        if (dbError) throw dbError;
+      }
 
-      // 4. Limpiar input y actualizar la grilla
       setAutorInput('');
       fetchFotos();
     } catch (error) {
-      console.error('Error en el proceso de subida:', error);
-      alert('Hubo un error al subir la foto. Intentalo de nuevo.');
+      console.error('Error en el proceso de subida múltiple:', error);
+      alert('Hubo un error al subir alguna de las fotos. Intentalo de nuevo.');
     } finally {
       setSubiendo(false);
+      e.target.value = '';
     }
   };
 
@@ -89,11 +90,12 @@ export default function Galeria() {
           disabled={subiendo}
         />
         <label className={`btn-upload ${subiendo ? 'disabled' : ''}`}>
-          {subiendo ? 'Subiendo...' : '➕ Subir Foto'}
+          {subiendo ? 'Subiendo fotos...' : '➕ Subir Fotos'}
           <input 
             type="file" 
             accept="image/*" 
-            onChange={handleSubirFoto} 
+            multiple 
+            onChange={handleSubirFotos} 
             style={{ display: 'none' }} 
             disabled={subiendo}
           />
@@ -103,7 +105,11 @@ export default function Galeria() {
       {/* Grilla de Fotos */}
       <div className="fotos-grid">
         {fotos.map((foto) => (
-          <div key={foto.id} className="foto-card">
+          <div 
+            key={foto.id} 
+            className="foto-card"
+            onClick={() => setFotoSeleccionada(foto)} // Al hacer click se abre en grande
+          >
             <img src={foto.url} alt="Recuerdo del mundialito" />
             <div className="foto-info">
               <span className="foto-autor">👤 {foto.autor}</span>
@@ -112,6 +118,20 @@ export default function Galeria() {
           </div>
         ))}
       </div>
+
+      {/* Modal / Vista Ampliada (Lightbox) */}
+      {fotoSeleccionada && (
+        <div className="modal-overlay" onClick={() => setFotoSeleccionada(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setFotoSeleccionada(null)}>×</button>
+            <img src={fotoSeleccionada.url} alt="Ampliada" />
+            <div className="modal-info">
+              <span>👤 {fotoSeleccionada.autor}</span>
+              <span>📅 {fotoSeleccionada.fecha}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
