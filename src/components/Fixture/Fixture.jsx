@@ -18,6 +18,7 @@ export default function Fixture() {
   const [showModal, setShowModal] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [errorPassword, setErrorPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Contraseña de administrador
   const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
@@ -168,7 +169,7 @@ export default function Fixture() {
       </div>
 
       {/* Modal de Acceso Admin */}
-      {showModal && (
+     {showModal && (
         <div
           className="modal-overlay"
           onClick={(e) => {
@@ -185,14 +186,24 @@ export default function Fixture() {
             </p>
             <p>Ingresá la contraseña para habilitar la carga:</p>
             <form onSubmit={handleVerifyPassword}>
-              <input
-                type="password"
-                placeholder="Contraseña..."
-                value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
-                autoFocus
-                className="modal-input"
-              />
+              <div className="password-input-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Contraseña..."
+                  value={passwordInput}
+                  onChange={(e) => setPasswordInput(e.target.value)}
+                  autoFocus
+                  className="modal-input"
+                />
+                <button
+                  type="button"
+                  className="btn-toggle-password"
+                  onClick={() => setShowPassword(!showPassword)}
+                  title={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
+                >
+                  {showPassword ? "👁️‍🗨️" : "👁️"}
+                </button>
+              </div>
               {errorPassword && (
                 <span className="modal-error">Contraseña incorrecta</span>
               )}

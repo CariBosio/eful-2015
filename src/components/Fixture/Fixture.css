@@ -250,6 +250,35 @@
   border-color: #ffcc00;
 }
 
+.password-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.password-input-wrapper .modal-input {
+  margin-bottom: 0;
+  padding-right: 40px; /* Deja espacio para que el texto no se pise con el ícono */
+}
+
+.btn-toggle-password {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
 .modal-error {
   display: block;
   color: #ff4d4d;
