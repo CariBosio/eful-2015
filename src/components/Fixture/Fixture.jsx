@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { supabase } from "../../supabaseClient";
 import { efulMatches } from "../../data/fixtures";
 import "./Fixture.css";
 
@@ -6,28 +7,96 @@ export default function Fixture() {
   const [matches, setMatches] = useState(
     efulMatches.map((m) => ({
       ...m,
-      golesLocal: "",
-      golesRival: "",
-      penalesLocal: "",
-      penalesRival: "",
+      goles_local: "",
+      goles_rival: "",
+      penales_local: "",
+      penales_rival: "",
     })),
   );
 
-  const handleInputChange = (id, field, value) => {
+  const [esAdmin, setEsAdmin] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [errorPassword, setErrorPassword] = useState(false);
+
+  // Contraseña de administrador
+  const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+
+  useEffect(() => {
+    fetchResultados();
+  }, []);
+
+  const fetchResultados = async () => {
+    const { data, error } = await supabase
+      .from("resultados_partidos")
+      .select("*");
+    if (data) {
+      setMatches((prev) =>
+        prev.map((m) => {
+          const resultadoGuardado = data.find((d) => d.id === m.id);
+          return resultadoGuardado ? { ...m, ...resultadoGuardado } : m;
+        }),
+      );
+    }
+  };
+
+  const handleInputChange = async (id, field, value) => {
     if (value !== "" && (isNaN(value) || parseInt(value) < 0)) return;
+
     setMatches(
       matches.map((m) => (m.id === id ? { ...m, [field]: value } : m)),
     );
+
+    const { error } = await supabase.from("resultados_partidos").upsert({
+      id: id,
+      [field]: value === "" ? null : parseInt(value),
+    });
+
+    if (error) console.error("Error al guardar:", error);
+  };
+
+  const handleAdminClick = () => {
+    if (esAdmin) {
+      setEsAdmin(false);
+    } else {
+      setPasswordInput("");
+      setErrorPassword(false);
+      setShowModal(true);
+    }
+  };
+
+  // Función unificada para cerrar el modal limpiando todo
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setPasswordInput("");
+    setErrorPassword(false);
+  };
+
+  const handleVerifyPassword = (e) => {
+    e.preventDefault();
+    if (passwordInput === ADMIN_PASSWORD) {
+      setEsAdmin(true);
+      setShowModal(false);
+      setErrorPassword(false);
+    } else {
+      setErrorPassword(true);
+    }
   };
 
   const calculatePoints = (match) => {
-    const { golesLocal, golesRival, penalesLocal, penalesRival, local } = match;
+    const { goles_local, goles_rival, penales_local, penales_rival, local } =
+      match;
 
-    if (golesLocal === "" || golesRival === "")
+    if (
+      goles_local === "" ||
+      goles_rival === "" ||
+      goles_local == null ||
+      goles_rival == null
+    )
       return { total: 0, detalle: "" };
 
-    const gl = parseInt(golesLocal);
-    const gr = parseInt(golesRival);
+    const gl = parseInt(goles_local);
+    const gr = parseInt(goles_rival);
 
     const esEfulLocal = local.toUpperCase() === "EFUL";
     const efulGoles = esEfulLocal ? gl : gr;
@@ -50,9 +119,14 @@ export default function Fixture() {
     let puntosPenales = 0;
     let descPenales = "";
 
-    if (penalesLocal !== "" && penalesRival !== "") {
-      const pl = parseInt(penalesLocal);
-      const pr = parseInt(penalesRival);
+    if (
+      penales_local !== "" &&
+      penales_rival !== "" &&
+      penales_local != null &&
+      penales_rival != null
+    ) {
+      const pl = parseInt(penales_local);
+      const pr = parseInt(penales_rival);
       const efulPen = esEfulLocal ? pl : pr;
       const rivalPen = esEfulLocal ? pr : pl;
 
@@ -80,7 +154,64 @@ export default function Fixture() {
 
   return (
     <div className="fixture-container">
-      <h2 className="section-title">Fixture EFUL - Zona de Partidos</h2>
+      <div className="fixture-header-row">
+        <h2 className="section-title">Fixture EFUL - Partidos</h2>
+
+        {/* Botón con candado dinámico */}
+        <button
+          className="btn-admin-trigger"
+          onClick={handleAdminClick}
+          title={esAdmin ? "Bloquear edición" : "Acceso Administrador"}
+        >
+          {esAdmin ? "🔓" : "🔒"}
+        </button>
+      </div>
+
+      {/* Modal de Acceso Admin */}
+      {showModal && (
+        <div
+          className="modal-overlay"
+          onClick={(e) => {
+            if (e.target.className === "modal-overlay") {
+              handleCloseModal();
+            }
+          }}
+        >
+          <div className="modal-content">
+            <h3>🔐 Acceso de Administrador</h3>
+            <p className="modal-info-text">
+              ⚠️ Solo los administradores pueden cargar y modificar los
+              resultados.
+            </p>
+            <p>Ingresá la contraseña para habilitar la carga:</p>
+            <form onSubmit={handleVerifyPassword}>
+              <input
+                type="password"
+                placeholder="Contraseña..."
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                autoFocus
+                className="modal-input"
+              />
+              {errorPassword && (
+                <span className="modal-error">Contraseña incorrecta</span>
+              )}
+              <div className="modal-buttons">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="btn-cancel"
+                >
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-confirm">
+                  Ingresar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Panel Superior Resumen de Puntos */}
       <div className="fixture-summary-card">
@@ -88,9 +219,7 @@ export default function Fixture() {
           <span className="summary-subtitle">Estado General</span>
           <strong className="summary-title">Total Acumulado EFUL</strong>
         </div>
-        <div className="summary-badge">
-          {totalPuntosGeneral} pts
-        </div>
+        <div className="summary-badge">{totalPuntosGeneral} pts</div>
       </div>
 
       <div className="matches-list">
@@ -108,13 +237,13 @@ export default function Fixture() {
                     🕒 <strong>{match.hora} hs</strong> | ⚽ Cancha:{" "}
                     <strong>{match.cancha}</strong>
                     <button
+                      className="btn-gps"
                       onClick={() =>
                         window.open(
                           `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(match.coords.trim())}`,
                           "_blank",
                         )
                       }
-                      className="btn-gps"
                     >
                       <i className="fa-solid fa-location-arrow"></i> GPS
                     </button>
@@ -128,30 +257,32 @@ export default function Fixture() {
                       type="text"
                       maxLength="2"
                       placeholder="EF"
-                      value={match.golesLocal}
+                      disabled={!esAdmin}
+                      value={match.goles_local ?? ""}
                       onChange={(e) =>
                         handleInputChange(
                           match.id,
-                          "golesLocal",
+                          "goles_local",
                           e.target.value,
                         )
                       }
-                      className="match-input"
+                      className={`match-input ${!esAdmin ? "read-only" : ""}`}
                     />
                     <span>-</span>
                     <input
                       type="text"
                       maxLength="2"
                       placeholder="Rival"
-                      value={match.golesRival}
+                      disabled={!esAdmin}
+                      value={match.goles_rival ?? ""}
                       onChange={(e) =>
                         handleInputChange(
                           match.id,
-                          "golesRival",
+                          "goles_rival",
                           e.target.value,
                         )
                       }
-                      className="match-input"
+                      className={`match-input ${!esAdmin ? "read-only" : ""}`}
                     />
                   </div>
 
@@ -161,43 +292,48 @@ export default function Fixture() {
                       type="text"
                       maxLength="2"
                       placeholder="EF P."
-                      value={match.penalesLocal}
+                      disabled={!esAdmin}
+                      value={match.penales_local ?? ""}
                       onChange={(e) =>
                         handleInputChange(
                           match.id,
-                          "penalesLocal",
+                          "penales_local",
                           e.target.value,
                         )
                       }
-                      className="match-input"
+                      className={`match-input ${!esAdmin ? "read-only" : ""}`}
                     />
                     <span>-</span>
                     <input
                       type="text"
                       maxLength="2"
                       placeholder="Rival P."
-                      value={match.penalesRival}
+                      disabled={!esAdmin}
+                      value={match.penales_rival ?? ""}
                       onChange={(e) =>
                         handleInputChange(
                           match.id,
-                          "penalesRival",
+                          "penales_rival",
                           e.target.value,
                         )
                       }
-                      className="match-input"
+                      className={`match-input ${!esAdmin ? "read-only" : ""}`}
                     />
                   </div>
                 </div>
               </div>
 
-              {match.golesLocal !== "" && match.golesRival !== "" && (
-                <div className="match-score-footer">
-                  <span className="score-detail-text">{score.detalle}</span>
-                  <span className="score-points-badge">
-                    Puntaje: +{score.total} pts
-                  </span>
-                </div>
-              )}
+              {match.goles_local !== "" &&
+                match.goles_rival !== "" &&
+                match.goles_local != null &&
+                match.goles_rival != null && (
+                  <div className="match-score-footer">
+                    <span className="score-detail-text">{score.detalle}</span>
+                    <span className="score-points-badge">
+                      Puntaje: +{score.total} pts
+                    </span>
+                  </div>
+                )}
             </div>
           );
         })}

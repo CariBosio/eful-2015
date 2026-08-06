@@ -1,5 +1,6 @@
 :root {
   --bg-primary: #121212;        /* Fondo general negro oscuro */
+  --bg-upload-section: #2a2a2a;
   --bg-secondary: #1e1e1e;      /* Fondo de tarjetas y contenedores */
   --card-bg: #252525;           /* Superficies de tarjetas */
   
@@ -10,9 +11,11 @@
   --accent: #ff8800;            /* Alias para compatibilidad */
   
   --text-main: #ffffff;         /* Texto principal blanco */
+  --text-main-black: #2a2a2a; 
   --text-muted: #aaaaaa;        /* Texto secundario gris */
   
   --border-color: #333333;      /* Bordes sutiles */
+  --border-input: #444444;
 }
 
 body {

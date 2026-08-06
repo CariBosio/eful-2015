@@ -3,31 +3,29 @@ import { supabase } from "../../supabaseClient";
 import "./Galeria.css";
 
 export default function Galeria() {
-  const [fotos, setFotos] = useState([]);
+  const [multimedia, setMultimedia] = useState([]);
   const [autorInput, setAutorInput] = useState("");
   const [subiendo, setSubiendo] = useState(false);
-  const [fotoSeleccionada, setFotoSeleccionada] = useState(null); // Estado para la foto en grande
+  const [itemSeleccionado, setItemSeleccionado] = useState(null);
 
-  // Cargar fotos desde Supabase al iniciar el componente
   useEffect(() => {
-    fetchFotos();
+    fetchMultimedia();
   }, []);
 
-  const fetchFotos = async () => {
+  const fetchMultimedia = async () => {
     const { data, error } = await supabase
       .from("fotos_mundialito")
       .select("*")
       .order("id", { ascending: false });
 
     if (error) {
-      console.error("Error al cargar fotos:", error);
+      console.error("Error al cargar galería:", error);
     } else {
-      setFotos(data || []);
+      setMultimedia(data || []);
     }
   };
 
-  // Función para manejar la subida múltiple de fotos
-  const handleSubirFotos = async (e) => {
+  const handleSubirArchivos = async (e) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
@@ -36,6 +34,10 @@ export default function Galeria() {
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const fileName = `${Date.now()}_${i}_${file.name}`;
+
+        const esVideo = file.type.startsWith("video/");
+        const tipoArchivo = esVideo ? "video" : "imagen";
+
         const { error: uploadError } = await supabase.storage
           .from("galeria-efuls")
           .upload(fileName, file);
@@ -48,24 +50,25 @@ export default function Galeria() {
 
         const urlPublica = publicURLData.publicUrl;
 
-        const nuevaFoto = {
+        const nuevoItem = {
           url: urlPublica,
+          tipo: tipoArchivo,
           autor: autorInput.trim() || "Anónimo",
           fecha: new Date().toLocaleDateString(),
         };
 
         const { error: dbError } = await supabase
           .from("fotos_mundialito")
-          .insert([nuevaFoto]);
+          .insert([nuevoItem]);
 
         if (dbError) throw dbError;
       }
 
       setAutorInput("");
-      fetchFotos();
+      fetchMultimedia();
     } catch (error) {
-      console.error("Error en el proceso de subida múltiple:", error);
-      alert("Hubo un error al subir alguna de las fotos. Intentalo de nuevo.");
+      console.error("Error en el proceso de subida:", error);
+      alert("Hubo un error al subir algún archivo. Intentalo de nuevo.");
     } finally {
       setSubiendo(false);
       e.target.value = "";
@@ -74,68 +77,106 @@ export default function Galeria() {
 
   return (
     <div className="galeria-container">
-      <div className="galeria-header">
-        <h2>📸 Galería del Mundialito - EFUL 2015</h2>
-        <p>¡Subí tus fotos de la cancha para que todos las puedan ver!</p>
-      </div>
+   <div className="galeria-header">
+  <h2>
+    <span className="emoji-title">📸</span> Galería - EFUL
+  </h2>
+  <p>¡Subí tus fotos y videos de la cancha!</p>
+</div>
 
       {/* Panel de Carga */}
       <div className="upload-card">
         <input
           type="text"
-          placeholder="Tu nombre / Quién saca la foto..."
+          placeholder="Tu nombre / Quién saca..."
           value={autorInput}
           onChange={(e) => setAutorInput(e.target.value)}
           className="input-autor"
           disabled={subiendo}
         />
         <label className={`btn-upload ${subiendo ? "disabled" : ""}`}>
-          {subiendo ? "Subiendo fotos..." : "➕ Subir Fotos"}
+          {subiendo ? "Subiendo archivos..." : "➕ Subir Fotos / Videos"}
           <input
             type="file"
-            accept="image/*"
+            accept="image/*,video/*"
             multiple
-            onChange={handleSubirFotos}
+            onChange={handleSubirArchivos}
             style={{ display: "none" }}
             disabled={subiendo}
           />
         </label>
       </div>
 
-      {/* Grilla de Fotos */}
+      {/* Grilla de Multimedia */}
       <div className="fotos-grid">
-        {fotos.map((foto) => (
+        {multimedia.map((item) => (
           <div
-            key={foto.id}
+            key={item.id}
             className="foto-card"
-            onClick={() => setFotoSeleccionada(foto)} // Al hacer click se abre en grande
+            onClick={() => setItemSeleccionado(item)}
           >
-            <img src={foto.url} alt="Recuerdo del mundialito" />
+            <div className="media-thumbnail-wrapper">
+              {item.tipo === "video" ? (
+                <>
+                  <video
+                    src={item.url}
+                    className="grid-media-item"
+                    preload="metadata"
+                    muted
+                  />
+                  <div className="video-play-badge">▶</div>
+                </>
+              ) : (
+                <img
+                  src={item.url}
+                  alt="Recuerdo EFUL"
+                  className="grid-media-item"
+                  loading="lazy"
+                />
+              )}
+            </div>
+
             <div className="foto-info">
-              <span className="foto-autor">👤 {foto.autor}</span>
-              <span className="foto-fecha">📅 {foto.fecha}</span>
+              <span className="foto-autor">🙍 {item.autor}</span>
+              <span className="foto-fecha">📅 {item.fecha}</span>
             </div>
           </div>
         ))}
       </div>
 
       {/* Modal / Vista Ampliada (Lightbox) */}
-      {fotoSeleccionada && (
+      {itemSeleccionado && (
         <div
           className="modal-overlay"
-          onClick={() => setFotoSeleccionada(null)}
+          onClick={() => setItemSeleccionado(null)}
         >
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button
               className="modal-close"
-              onClick={() => setFotoSeleccionada(null)}
+              onClick={() => setItemSeleccionado(null)}
             >
               ×
             </button>
-            <img src={fotoSeleccionada.url} alt="Ampliada" />
+
+            {itemSeleccionado.tipo === "video" ? (
+              <video
+                src={itemSeleccionado.url}
+                controls
+                autoPlay
+                className="modal-media-element"
+              />
+            ) : (
+              <img
+                src={itemSeleccionado.url}
+                alt="Ampliada"
+                className="modal-media-element"
+              />
+            )}
+
             <div className="modal-info">
-              <span>👤 {fotoSeleccionada.autor}</span>
-              <span>📅 {fotoSeleccionada.fecha}</span>
+              <span>🙍{itemSeleccionado.autor}
+              </span>
+              <span>📅 {itemSeleccionado.fecha}</span>
             </div>
           </div>
         </div>
