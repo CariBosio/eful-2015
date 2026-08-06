@@ -1,0 +1,45 @@
+/* --- Estilos del Componente LogoSplash --- */
+
+.eful-logo-anim {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.eful-svg {
+  overflow: visible;
+  width: 100%;
+  height: auto;
+}
+
+/* Colores de los elementos vectoriales */
+.bg-circle {
+  fill: #fee702;
+}
+
+.eful-mask {
+  width: 2699px;
+  height: 2388px;
+  x: 0;
+  y: 0;
+  mask-type: alpha;
+}
+
+.mask-stripes-fill {
+  fill: #ff8800;
+}
+
+.mask-cutout-fill {
+  fill: #000000;
+}
+
+.yellow-circle-masked {
+  fill: #fdb405;
+}
+
+.path-black {
+  fill: #000000;
+}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { efulMatches } from "../data/fixtures";
+import { efulMatches } from "../../data/fixtures";
+import "./Fixture.css";
 
 export default function Fixture() {
   const [matches, setMatches] = useState(
@@ -73,104 +74,37 @@ export default function Fixture() {
     };
   };
 
-  // Sumatoria total de puntos de todos los partidos cargados
   const totalPuntosGeneral = matches.reduce((acc, match) => {
     return acc + calculatePoints(match).total;
   }, 0);
 
   return (
-    <div>
+    <div className="fixture-container">
       <h2 className="section-title">Fixture EFUL - Zona de Partidos</h2>
 
       {/* Panel Superior Resumen de Puntos */}
-      <div
-        style={{
-          backgroundColor: "var(--bg-secondary)",
-          border: "2px solid var(--color-primary)",
-          borderRadius: "10px",
-          padding: "12px 20px",
-          marginBottom: "20px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          boxShadow: "0 4px 12px rgba(255, 204, 0, 0.1)",
-        }}
-      >
+      <div className="fixture-summary-card">
         <div>
-          <span
-            style={{
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              textTransform: "uppercase",
-              fontWeight: "bold",
-              display: "block",
-            }}
-          >
-            Estado General
-          </span>
-          <strong style={{ fontSize: "1.1rem", color: "var(--text-main)" }}>
-            Total Acumulado EFUL
-          </strong>
+          <span className="summary-subtitle">Estado General</span>
+          <strong className="summary-title">Total Acumulado EFUL</strong>
         </div>
-        <div
-          style={{
-            backgroundColor: "var(--color-primary)",
-            color: "var(--bg-primary)",
-            padding: "6px 16px",
-            borderRadius: "8px",
-            fontWeight: "900",
-            fontSize: "1.25rem",
-          }}
-        >
+        <div className="summary-badge">
           {totalPuntosGeneral} pts
         </div>
       </div>
 
-      <div>
+      <div className="matches-list">
         {matches.map((match) => {
           const score = calculatePoints(match);
           return (
-            <div
-              key={match.id}
-              className="match-card"
-              style={{ display: "block" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  flexWrap: "wrap",
-                  gap: "1rem",
-                  alignItems: "center",
-                }}
-              >
+            <div key={match.id} className="match-card">
+              <div className="match-main-row">
                 <div>
-                  <span
-                    style={{
-                      fontSize: "0.75rem",
-                      fontWeight: "bold",
-                      color: "var(--accent)",
-                      textTransform: "uppercase",
-                      display: "block",
-                      marginBottom: "0.2rem",
-                    }}
-                  >
-                    {match.dia}
-                  </span>
-                  <strong style={{ fontSize: "1.05rem" }}>
+                  <span className="match-day">{match.dia}</span>
+                  <strong className="match-teams">
                     {match.local} vs {match.rival}
                   </strong>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "0.5rem",
-                      fontSize: "0.85rem",
-                      color: "var(--text-muted)",
-                      marginTop: "0.3rem",
-                      flexWrap: "wrap",
-                    }}
-                  >
+                  <div className="match-details-info">
                     🕒 <strong>{match.hora} hs</strong> | ⚽ Cancha:{" "}
                     <strong>{match.cancha}</strong>
                     <button
@@ -180,45 +114,16 @@ export default function Fixture() {
                           "_blank",
                         )
                       }
-                      style={{
-                        backgroundColor: "rgba(255, 204, 0, 0.1)",
-                        color: "var(--color-primary)",
-                        border: "1px solid var(--color-primary)",
-                        borderRadius: "6px",
-                        padding: "2px 8px",
-                        fontSize: "0.85rem",
-                        fontWeight: "bold",
-                        cursor: "pointer",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
+                      className="btn-gps"
                     >
                       <i className="fa-solid fa-location-arrow"></i> GPS
                     </button>
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    alignItems: "flex-end",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <span
-                      style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                    >
-                      Goles:
-                    </span>
+                <div className="match-inputs-container">
+                  <div className="input-group-row">
+                    <span className="input-label">Goles:</span>
                     <input
                       type="text"
                       maxLength="2"
@@ -250,18 +155,8 @@ export default function Fixture() {
                     />
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <span
-                      style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                    >
-                      Penales:
-                    </span>
+                  <div className="input-group-row">
+                    <span className="input-label">Penales:</span>
                     <input
                       type="text"
                       maxLength="2"
@@ -296,32 +191,9 @@ export default function Fixture() {
               </div>
 
               {match.golesLocal !== "" && match.golesRival !== "" && (
-                <div
-                  style={{
-                    marginTop: "12px",
-                    paddingTop: "8px",
-                    borderTop: "1px solid var(--border-color)",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    fontSize: "0.9rem",
-                    flexWrap: "wrap",
-                    gap: "8px",
-                  }}
-                >
-                  <span style={{ color: "var(--text-muted)" }}>
-                    {score.detalle}
-                  </span>
-                  <span
-                    style={{
-                      fontWeight: "800",
-                      color: "var(--color-primary)",
-                      backgroundColor: "var(--bg-primary)",
-                      padding: "4px 10px",
-                      borderRadius: "6px",
-                      border: "1px solid var(--border-color)",
-                    }}
-                  >
+                <div className="match-score-footer">
+                  <span className="score-detail-text">{score.detalle}</span>
+                  <span className="score-points-badge">
                     Puntaje: +{score.total} pts
                   </span>
                 </div>

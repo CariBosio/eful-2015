@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Fixture from "./components/Fixture";
-import Plantel from "./components/Plantel";
+import Fixture from "./components/Fixture/Fixture";
+import Plantel from "./components/Plantel/Plantel";
 import "./index.css";
 import { gsap } from "gsap";
-import LogoSplash from "./components/LogoSplash";
-import Galeria from "./components/Galeria";
+import LogoSplash from "./components/LogoSplash/LogoSplash";
+import Galeria from "./components/Galeria/Galeria";
 
 export default function App() {
   const [tab, setTab] = useState("fixture");
@@ -325,7 +325,7 @@ export default function App() {
           </button>
         </nav>
 
-      <main className="main-content">
+        <main className="main-content">
           {tab === "fixture" && <Fixture />}
           {tab === "plantel" && <Plantel />}
           {tab === "galeria" && <Galeria />}
