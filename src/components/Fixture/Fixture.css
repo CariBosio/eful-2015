@@ -258,24 +258,26 @@
 
 .password-input-wrapper .modal-input {
   margin-bottom: 0;
-  padding-right: 48px; /* Damos más aire a la derecha para que no se encime */
+  padding-right: 40px; /* Deja espacio para que el texto no se pise con el ícono */
 }
 
 .btn-toggle-password {
   position: absolute;
-  right: 14px; /* Separado del borde derecho para esquivar los globos del celu */
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 18px;
-  padding: 4px;
+  font-size: 16px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10; /* Lo forzamos a estar por encima de elementos nativos */
 }
+
+
+
 
 .modal-error {
   display: block;

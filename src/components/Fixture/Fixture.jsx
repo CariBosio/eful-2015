@@ -169,7 +169,7 @@ export default function Fixture() {
       </div>
 
       {/* Modal de Acceso Admin */}
-     {showModal && (
+      {showModal && (
         <div
           className="modal-overlay"
           onClick={(e) => {
@@ -201,7 +201,7 @@ export default function Fixture() {
                   onClick={() => setShowPassword(!showPassword)}
                   title={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
                 >
-                  {showPassword ? "👁️‍🗨️" : "👁️"}
+                  {showPassword ? "🔓" : "🔒"}
                 </button>
               </div>
               {errorPassword && (
