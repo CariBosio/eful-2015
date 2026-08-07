@@ -258,7 +258,7 @@
 
 .password-input-wrapper .modal-input {
   margin-bottom: 0;
-  padding-right: 40px; /* Deja espacio para que el texto no se pise con el ícono */
+  padding-right: 48px; /* Deja espacio para que el texto no se pise con el ícono */
 }
 
 .btn-toggle-password {
@@ -275,9 +275,6 @@
   align-items: center;
   justify-content: center;
 }
-
-
-
 
 .modal-error {
   display: block;
