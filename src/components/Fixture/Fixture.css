@@ -317,3 +317,17 @@
 .btn-confirm:hover {
   background-color: #e6b800;
 }
+
+/* Oculta el botón nativo de password en Edge e IE */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+/* Oculta el botón nativo de password en Chrome/Safari */
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
