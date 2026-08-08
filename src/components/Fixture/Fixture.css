@@ -331,3 +331,10 @@ input[type="password"]::-webkit-credentials-auto-fill-button {
   position: absolute;
   right: 0;
 }
+
+.fa-lock,
+.fa-lock-open,
+.fa-eye,
+.fa-eye-slash {
+  color: #ffcc00;
+}

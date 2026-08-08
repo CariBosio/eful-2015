@@ -164,7 +164,7 @@ export default function Fixture() {
           onClick={handleAdminClick}
           title={esAdmin ? "Bloquear edición" : "Acceso Administrador"}
         >
-          {esAdmin ? "🔓" : "🔒"}
+          <i className={`fa-solid ${esAdmin ? "fa-lock-open" : "fa-lock"}`}></i>
         </button>
       </div>
 
@@ -201,7 +201,9 @@ export default function Fixture() {
                   onClick={() => setShowPassword(!showPassword)}
                   title={showPassword ? "Ocultar contraseña" : "Ver contraseña"}
                 >
-                  {showPassword ? "🔓" : "🔒"}
+                  <i
+                    className={`fa-solid ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                  ></i>
                 </button>
               </div>
               {errorPassword && (
