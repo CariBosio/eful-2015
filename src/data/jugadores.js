@@ -8,7 +8,7 @@ export const efulPlantel = [
   { id: 7, nombre: "Juri Joaquín", dorsal: "58", categoria: "2016", posicion: "Mediocampista", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786026764/EFUL/Comprimidas/Joaqu%C3%ADn_l6niyp.png" },
   { id: 8, nombre: "Rodríguez Salort Simón", dorsal: "56", categoria: "2016", posicion: "Delantero", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786026765/EFUL/Comprimidas/Simon_qdxmtd.png" },
   { id: 9, nombre: "Rosso Lorenzo", dorsal: "15", categoria: "2016", posicion: "Defensa", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786026766/EFUL/Comprimidas/Lolo_tihank.png" },
-  { id: 10, nombre: "Varela Federico", dorsal: "90", categoria: "2016", posicion: "Jugador", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786024444/EFUL/Comprimidas/Federico_xm7g4c.png" },
+  { id: 10, nombre: "Varela Federico", dorsal: "90", categoria: "2016", posicion: "Defensa", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786024444/EFUL/Comprimidas/Federico_xm7g4c.png" },
   { id: 11, nombre: "Ferreyra Uriel", dorsal: "61", categoria: "2016", posicion: "Delantero", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786026766/EFUL/Comprimidas/Uriel_boefaq.png" },
   { id: 12, nombre: "García Flores Lautaro", dorsal: "53", categoria: "2016", posicion: "Delantero", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786026765/EFUL/Comprimidas/Lautaro_jowp05.png" },
   { id: 13, nombre: "Garzón Clemente", dorsal: "62", categoria: "2016", posicion: "Arquero", foto: "https://res.cloudinary.com/carina-bosio/image/upload/v1786028728/EFUL/Comprimidas/Clemente_uwebj8.png" },
