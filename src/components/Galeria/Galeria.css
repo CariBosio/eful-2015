@@ -15,17 +15,11 @@
 .galeria-header h2 {
   color: var(--color-primary);
   font-size: 1.8rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  text-align: center;
 }
 
 .emoji-title {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem; /* Para regular el tamaño del emoji */
+  font-size: 1.3rem;
   line-height: 1;
 }
 
@@ -137,17 +131,22 @@
   border-top: 1px solid var(--border-color);
 }
 
-.foto-autor {
+.foto-autor,
+.foto-fecha {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-weight: bold;
+  font-weight: 500;
+  color: var(--text-main);
+}
+
+.foto-autor i,
+.foto-fecha i {
   color: var(--color-primary);
 }
 
 .foto-fecha {
-  color: var(--text-main);
-  font-size: 0.8rem;
+  font-weight: 400;
 }
 
 .icon-custom {
@@ -218,9 +217,8 @@
 .modal-info {
   margin: 0;
   width: 100%;
-  color: var(--color-primary);
+  color: var(--text-main);
   font-size: 0.95rem;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   background: var(--bg-secondary);
@@ -229,3 +227,6 @@
   box-sizing: border-box;
 }
 
+.modal-info i {
+  color: var(--color-primary);
+}

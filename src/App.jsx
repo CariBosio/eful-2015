@@ -301,7 +301,7 @@ export default function App() {
       >
         <header className="header">
           <h1>EFUL Categoría 2015</h1>
-          <p>Mundialito de Invierno 2026 - El Norte</p>
+          <p>Mundialito de Invierno 2026 - El Norte CD</p>
         </header>
 
         <nav className="nav">
@@ -309,19 +309,19 @@ export default function App() {
             onClick={() => setTab("fixture")}
             className={`nav-btn ${tab === "fixture" ? "active" : ""}`}
           >
-            📅 Fixture & Resultados
+            <i className="fa-solid fa-calendar-days"></i>Fixture & Resultados
           </button>
           <button
             onClick={() => setTab("plantel")}
             className={`nav-btn ${tab === "plantel" ? "active" : ""}`}
           >
-            ⭐ Plantel Oficial
+            <i className="fa-solid fa-star"></i>Plantel Oficial
           </button>
           <button
             onClick={() => setTab("galeria")}
             className={`nav-btn ${tab === "galeria" ? "active" : ""}`}
           >
-            📸 Galería de Fotos
+            <i className="fa-solid fa-camera"></i>Galería de Fotos
           </button>
         </nav>
 
