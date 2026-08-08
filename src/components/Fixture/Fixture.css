@@ -106,7 +106,7 @@
 .match-details-info {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.5rem; /* Un poquito más de aire entre elementos */
   font-size: 0.85rem;
   color: var(--text-muted);
   margin-top: 0.3rem;
@@ -117,12 +117,20 @@
   color: var(--color-primary);
 }
 
+/* Agrupamos visualmente los textos de hora y cancha para que no se desarmen */
+.match-time-block, 
+.match-cancha-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .btn-gps {
   background-color: rgba(255, 204, 0, 0.1);
   color: var(--color-primary);
   border: 1px solid var(--color-primary);
   border-radius: 6px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   font-size: 0.85rem;
   font-weight: bold;
   cursor: pointer;

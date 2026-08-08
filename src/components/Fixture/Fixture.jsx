@@ -247,10 +247,18 @@ export default function Fixture() {
                     {match.local} vs {match.rival}
                   </strong>
                   <div className="match-details-info">
-                    <i className="fa-solid fa-clock"></i>{" "}
-                    <strong>{match.hora} hs</strong> |{" "}
-                    <i className="fa-solid fa-location-dot"></i> Cancha:{" "}
-                    <strong>{match.cancha}</strong>
+                    <span className="match-time-block">
+                      <i className="fa-solid fa-clock"></i>
+                      <strong>{match.hora} hs</strong>
+                    </span>
+
+                    <span>|</span>
+
+                    <span className="match-cancha-block">
+                      <i className="fa-solid fa-location-dot"></i> Cancha:{" "}
+                      <strong>{match.cancha}</strong>
+                    </span>
+
                     <button
                       className="btn-gps"
                       onClick={() =>

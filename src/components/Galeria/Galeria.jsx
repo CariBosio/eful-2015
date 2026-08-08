@@ -79,10 +79,7 @@ export default function Galeria() {
     <div className="galeria-container">
       <div className="galeria-header">
         <h2>
-          <span className="emoji-title">
-            <i class="fa-solid fa-camera"></i>
-          </span>{" "}
-          Galería - EFUL
+          <i className="fa-solid fa-camera"></i> Galería - EFUL
         </h2>
         <p>¡Subí tus fotos y videos de la cancha!</p>
       </div>
@@ -141,8 +138,12 @@ export default function Galeria() {
             </div>
 
             <div className="foto-info">
-              <span className="foto-autor"><i className="fa-solid fa-user"></i> {item.autor}</span>
-              <span className="foto-fecha"><i className="fa-solid fa-calendar-days"></i> {item.fecha}</span>
+              <span className="foto-autor">
+                <i className="fa-solid fa-user"></i> {item.autor}
+              </span>
+              <span className="foto-fecha">
+                <i className="fa-solid fa-calendar-days"></i> {item.fecha}
+              </span>
             </div>
           </div>
         ))}
@@ -178,8 +179,13 @@ export default function Galeria() {
             )}
 
             <div className="modal-info">
-              <span><i className="fa-solid fa-user"></i> {itemSeleccionado.autor}</span>
-              <span><i className="fa-solid fa-calendar"></i> {itemSeleccionado.fecha}</span>
+              <span>
+                <i className="fa-solid fa-user"></i> {itemSeleccionado.autor}
+              </span>
+              <span>
+                <i className="fa-solid fa-calendar"></i>{" "}
+                {itemSeleccionado.fecha}
+              </span>
             </div>
           </div>
         </div>
