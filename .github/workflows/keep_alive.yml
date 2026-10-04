@@ -4,7 +4,6 @@ on:
   schedule:
     # Se ejecuta cada 3 días a las 00:00 UTC
     - cron: '0 0 */3 * *'
-  # Permite ejecutarlo manualmente desde GitHub Actions para probarlo
   workflow_dispatch:
 
 jobs:
@@ -13,7 +12,7 @@ jobs:
     steps:
       - name: Ping a Supabase
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET "${{ secrets.SUPABASE_URL }}/rest/v1/${{ secrets.SUPABASE_TABLE }}?select=id&limit=1" \
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET "https://vjysfylddknjhqblgeiw.supabase.co/rest/v1/" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
           
