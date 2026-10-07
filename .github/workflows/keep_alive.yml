@@ -10,13 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping a Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET "https://vjysfylddknjhqblgeiw.supabase.co/rest/v1/" \
-            -H "apikey: sb_publishable_sasDL6Av4-B0F1tvnS8m-g_sMBLpuhK" \
-            -H "Authorization: Bearer sb_publishable_sasDL6Av4-B0F1tvnS8m-g_sMBLpuhK")
-          
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET \
+            "${SUPABASE_URL}" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}")
+
           echo "Supabase respondió con código HTTP: $STATUS"
-          
+
           if [ "$STATUS" -ge 200 ] && [ "$STATUS" -lt 400 ]; then
             echo "Ping exitoso. El proyecto sigue activo."
             exit 0
