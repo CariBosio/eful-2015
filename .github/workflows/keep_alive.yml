@@ -11,15 +11,15 @@ jobs:
     steps:
       - name: Ping a Supabase
         run: |
-          # Endpoint de salud del proyecto (devuelve 200 siempre que esté activo)
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X GET "https://vjysfyldknjhqblgeiw.supabase.co/auth/v1/health")
-
-          echo "Supabase respondió con código HTTP: $STATUS"
+          URL="https://vjysfyldknjhqblgeiw.supabase.co/auth/v1/health"
+          echo "Consultando: $URL"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
+          echo "Supabase respondio con codigo HTTP: $STATUS"
 
           if [ "$STATUS" -eq 200 ]; then
             echo "Ping exitoso. El proyecto sigue activo."
             exit 0
           else
-            echo "Error al conectar con Supabase. Código recibido: $STATUS"
+            echo "Error al conectar con Supabase. Codigo recibido: $STATUS"
             exit 1
           fi
