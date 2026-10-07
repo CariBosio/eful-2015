@@ -13,14 +13,21 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_TABLE: ${{ secrets.SUPABASE_TABLE }}
         run: |
           node -e '
-            const url = process.env.SUPABASE_URL;
+            let baseUrl = process.env.SUPABASE_URL.replace(/\/+$/, "");
             const key = process.env.SUPABASE_ANON_KEY;
+            const table = process.env.SUPABASE_TABLE;
 
-            console.log("Consultando endpoint...");
+            if (!baseUrl.includes("/rest/v1")) {
+              baseUrl += "/rest/v1";
+            }
 
-            fetch(url, {
+            const targetUrl = `${baseUrl}/${table}?select=id&limit=1`;
+            console.log("Consultando endpoint:", targetUrl);
+
+            fetch(targetUrl, {
               method: "GET",
               headers: {
                 "apikey": key,
@@ -30,7 +37,7 @@ jobs:
             .then(res => {
               console.log("Supabase respondió con status:", res.status);
               if (res.status >= 200 && res.status < 400) {
-                console.log("Ping exitoso.");
+                console.log("Ping exitoso. La base de datos está activa.");
                 process.exit(0);
               } else {
                 console.error("Respuesta no satisfactoria:", res.status);
