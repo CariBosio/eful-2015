@@ -10,16 +10,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping a Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
-          URL="https://vjysfyldknjhqblgeiw.supabase.co/auth/v1/health"
-          echo "Consultando: $URL"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL")
-          echo "Supabase respondio con codigo HTTP: $STATUS"
+          node -e '
+            const url = process.env.SUPABASE_URL;
+            const key = process.env.SUPABASE_ANON_KEY;
 
-          if [ "$STATUS" -eq 200 ]; then
-            echo "Ping exitoso. El proyecto sigue activo."
-            exit 0
-          else
-            echo "Error al conectar con Supabase. Codigo recibido: $STATUS"
-            exit 1
-          fi
+            console.log("Consultando endpoint...");
+
+            fetch(url, {
+              method: "GET",
+              headers: {
+                "apikey": key,
+                "Authorization": `Bearer ${key}`
+              }
+            })
+            .then(res => {
+              console.log("Supabase respondió con status:", res.status);
+              if (res.status >= 200 && res.status < 400) {
+                console.log("Ping exitoso.");
+                process.exit(0);
+              } else {
+                console.error("Respuesta no satisfactoria:", res.status);
+                process.exit(1);
+              }
+            })
+            .catch(err => {
+              console.error("Error en la petición:", err.message);
+              process.exit(1);
+            });
+          '
